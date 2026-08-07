@@ -1,0 +1,70 @@
+---
+title: "İşyeri Otomasyonu — İşletme & Stok Yönetimi"
+summary: "İşletmelerin stok, fatura, cari ve kasa süreçlerini tek merkezden yönettiği, katmanlı mimariyle geliştirilmiş masaüstü otomasyon sistemi."
+highlight: "8 modül tek uygulamada: stok, fatura, cari, kasa, kâr/zarar analizi ve ajanda"
+category: "Masaüstü"
+image: "/projects/isyeri-otomasyonu.png"
+tech: ["C#", ".NET", "DevExpress", "MS SQL Server", "N-Tier Mimari"]
+github: "https://github.com/mervanoktan/Ntp_Otomasyon"
+year: 2023
+featured: true
+---
+
+## Problem
+
+Küçük ve orta ölçekli işletmelerde stok takibi, faturalama, cari hesaplar ve
+kasa hareketleri çoğu zaman ayrı Excel dosyalarında, hatta kağıt üzerinde
+yürütülüyor. Bunun sonucu: kritik stok seviyeleri fark edilmiyor, gelir-gider
+resmi ancak ay sonunda netleşiyor ve aynı verinin birden fazla kopyası
+tutarsızlaşıyor.
+
+Bu proje, bir işletmenin günlük operasyonunun tamamını tek bir masaüstü
+uygulamada toplama hedefiyle geliştirildi.
+
+## Mimari Kararlar
+
+**1. Katmanlı mimari (N-Tier).** Arayüz, iş mantığı ve veri erişimi ayrı
+katmanlara bölündü. Form sayısı arttıkça bu ayrımın değeri ortaya çıktı:
+örneğin fatura hesaplama kuralları tek bir iş katmanında durduğu için hem
+satış hem alış fatura ekranları aynı mantığı kullanıyor — kural değişince
+tek yer güncelleniyor.
+
+**2. Arayüzde DevExpress bileşenleri.** Standart WinForms kontrolleri yerine
+DevExpress GridView ve Ribbon tercih edildi. Sebep işlevsel: işletme
+kullanıcısının en çok ihtiyaç duyduğu şeyler — binlerce kayıtta hızlı
+filtreleme/sıralama ve tek tuşla **Excel/PDF dışa aktarma** — bu bileşenlerle
+hazır ve performanslı geliyor.
+
+**3. Veri: MS SQL Server üzerinde ilişkisel model.** Müşteri-fatura-stok-kasa
+ilişkileri normalize tablolarla kuruldu; kâr/zarar analizi ve periyodik
+raporlar, kayıt anında değil sorgu anında bu ilişkiler üzerinden hesaplanıyor
+— böylece raporlar her zaman güncel veriyi yansıtıyor.
+
+![Stok modülü: ürün bazlı dağılım grafiği ve stok listesi](/projects/isyeri-otomasyonu-stok.png)
+
+## Modüller
+
+Sistem, bir işletmenin operasyonunu uçtan uca kapsayan 8 modülden oluşuyor:
+
+- **Müşteri & Cari Takip** — kayıtlar, iletişim, bakiye izleme
+- **Stok & Depo** — miktar takibi, kritik stok uyarıları
+- **Fatura Yönetimi** — alış/satış faturaları, arşivleme
+- **Ürün Yönetimi** — kategorizasyon, fiyatlandırma, ürün kartları
+- **Gelir & Gider** — kalem bazlı sınıflandırma
+- **Kâr / Zarar Analizi** — anlık ve periyodik raporlar
+- **Kasa Hareketleri** — nakit akışı ve finansal özetler
+- **Toplantı & Ajanda** — planlama ve hatırlatıcılar
+
+## Sonuç
+
+<MetricGrid>
+  <Metric value="8" label="Entegre modül, tek uygulama" />
+  <Metric value="1-tık" label="Excel/PDF dışa aktarma" />
+  <Metric value="N-Tier" label="Katmanlı, sürdürülebilir mimari" />
+</MetricGrid>
+
+Bu proje, kariyerimin erken döneminde uçtan uca bir iş uygulamasını —
+veritabanı şemasından rapor ekranlarına kadar — tek başıma tasarlayıp
+geliştirme deneyimi kazandırdı. Bugün olsa bazı kararları farklı verirdim
+(ör. veri erişiminde ORM kullanımı); bu da projenin bana öğrettiklerinin
+en net kanıtı.

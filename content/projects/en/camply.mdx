@@ -1,0 +1,95 @@
+---
+title: "Camply — Campus Social Platform"
+summary: "A web + mobile platform where university students create activities and find each other: real-time chat, map view and a content-based recommendation engine."
+highlight: "One language (JavaScript) across 3 apps: web, mobile and API — with a 6-factor recommendation engine"
+category: "Web + Mobile"
+image: "/projects/camply-en.png"
+tech: ["React", "React Native (Expo)", "Node.js", "Express", "PostgreSQL", "Socket.io"]
+github: "https://github.com/mervanoktan/Camply"
+year: 2026
+featured: true
+---
+
+## The Problem
+
+University students struggle to find people with shared interests on campus:
+needs like "we need 3 more for a football match" get lost in WhatsApp groups,
+and cross-department socializing barely happens. Existing social platforms
+aren't campus-specific and are open to fake accounts.
+
+Camply solves this with two core ideas: **registration restricted to
+`.edu.tr` university emails** (every user is a verified student) and
+activity-centered matching (people meet through events, not profiles).
+
+## Architectural Decisions
+
+**1. One language on every layer: JavaScript.** The backend (Node.js +
+Express), web (React) and mobile (React Native + Expo) are all written in the
+same language. A deliberate choice for solo development speed: the same
+validation logic is reused on all three sides, and context-switching cost
+drops to zero. A monolith-first, API-first architecture was chosen; web and
+mobile consume the same REST API.
+
+**2. Trust designed as the core of the product.** The critical risks in a
+campus app are fake accounts and harassment. Solved in layers:
+
+- `.edu.tr` requirement + email verification links generated with
+  `crypto.randomBytes`, valid for 24 hours
+- Password hashing with bcrypt (10 salt rounds), 7-day JWT sessions
+- **UUIDs** instead of sequential IDs — profiles can't be enumerated via
+  `GET /users/1, /users/2...`
+- Parameterized SQL in every query (injection protection)
+- **Location privacy:** the map shows only an approximate neighborhood;
+  the exact address is visible only to participants
+- **Democratic moderation:** the group leader can't remove anyone alone;
+  removal requires a vote with thresholds scaled to group size (double
+  voting is blocked by a database `UNIQUE` constraint)
+
+**3. Recommendation engine: explainable scoring instead of an ML model.**
+Rather than training a machine learning model for "recommended for you",
+I built a content-based, rule-weighted scoring engine (0–100 match score):
+
+```text
++40  activity category matches the user's interest category
++10  title/description mentions one of the user's interests
++10  organizer rating ≥ 4.0 (trust bonus)
++15  a participant from the user's department (social proximity)
++10  less than 80% full  /  -20  completely full
++5   starts within 48 hours
+```
+
+Two concrete wins from this choice: negligible compute cost (50 candidates ×
+simple rules) and every recommendation is **explainable** — each card shows
+the real reason, like "matches your Software interest". As data grows, the
+same interface can be swapped for a learning model.
+
+**4. Real-time chat: Socket.io with per-room authorization.** WebSockets
+replace polling for messages. The critical detail is security: the JWT is
+verified when the connection is established, and every `join_room` request
+re-checks against the database that the user actually participates in that
+activity — holding a token doesn't grant access to every room.
+
+**5. Data model: a normalized 10-table schema.** Activity-participant-
+rating-message relations are normalized in PostgreSQL; messages are indexed
+by `activity_id`, participants by `user_id`, ratings by `rated_id`. A nightly
+`node-cron` job closes expired activities to keep data fresh.
+
+## Results & Status
+
+<MetricGrid>
+  <Metric value="3" label="Platforms: Web, iOS, Android — one language" />
+  <Metric value="10" label="Normalized PostgreSQL tables" />
+  <Metric value="6" label="Signals evaluated by the recommender" />
+</MetricGrid>
+
+<Callout>
+  The project is under active development. Roadmap: notification system,
+  advanced AI matching, and a gradual move to microservices as data volume
+  grows.
+</Callout>
+
+The biggest lesson: when building with limited resources, choose the
+**sustainable and explainable** solution over the flashiest one. The
+rule-based recommender delivered the same product experience without weeks
+of ML infrastructure — and it can show users the answer to "why this
+recommendation?".

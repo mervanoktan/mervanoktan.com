@@ -1,0 +1,64 @@
+---
+title: "Using Next.js's Four Cache Layers Correctly"
+summary: "Request memoization, Data Cache, Full Route Cache and Router Cache — when does each kick in, and how do you invalidate it?"
+date: "2026-05-12"
+---
+
+In the Next.js App Router, "cache" isn't one thing — it's four separate
+layers. Most "stale data" bugs come from not knowing which layer is in play.
+
+## The layers at a glance
+
+1. **Request Memoization** — The same `fetch` call within one render tree
+   runs once. Its lifetime is a single request; no invalidation needed.
+2. **Data Cache** — Persists `fetch` results across requests. Refreshed via
+   a `revalidate` interval or `revalidateTag`.
+3. **Full Route Cache** — The HTML/RSC output of a statically rendered page.
+   Created at build time, refreshed together with Data Cache invalidation.
+4. **Router Cache** — The RSC payload kept in the browser for client-side
+   navigation. You can't invalidate it from the server; it takes
+   `router.refresh()`.
+
+## The most common mistake
+
+Calling `revalidateTag` and the page still showing old data. The culprit is
+usually the Router Cache: the server side got refreshed, but the copy in the
+browser stayed.
+
+```ts
+// app/actions.ts
+"use server";
+
+import { revalidateTag } from "next/cache";
+
+export async function updateProduct(id: string, data: ProductInput) {
+  await db.product.update({ where: { id }, data });
+
+  // Refreshes the Data Cache + Full Route Cache.
+  // Because it's called from a Server Action, Next.js
+  // also invalidates the Router Cache automatically.
+  revalidateTag("products");
+}
+```
+
+<Callout>
+  Critical detail: if you call revalidateTag from a Route Handler, the
+  Router Cache is NOT refreshed. Call it from a Server Action and it is.
+  This is a little-known but important reason to keep mutations in Server
+  Actions.
+</Callout>
+
+## Practical rules
+
+- If data is user-specific, don't cache it: `cache: "no-store"` or dynamic
+  rendering. An accidentally shared cache is worse than a performance
+  problem.
+- If data is "the same for everyone but changing": `next: { tags: [...] }`
+  plus `revalidateTag` on mutation. Prefer event-based invalidation over
+  time-based `revalidate`.
+- When debugging, first find which layer you're stuck in: does `fetch` run
+  in the server logs (Data Cache), was the page rendered at build time
+  (Route Cache), does a hard refresh fix it (Router Cache)?
+
+Once the cache strategy is set up right, the App Router's
+"static by default" approach turns into a serious performance advantage.

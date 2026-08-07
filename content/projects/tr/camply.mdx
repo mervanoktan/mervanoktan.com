@@ -1,0 +1,96 @@
+---
+title: "Camply — Kampüs Sosyalleşme Platformu"
+summary: "Üniversite öğrencilerinin etkinlik kurup birbirini bulduğu web + mobil platform: gerçek zamanlı sohbet, harita ve içerik tabanlı öneri motoru."
+highlight: "Tek dil (JavaScript) ile 3 uygulama: web, mobil ve API — 6 faktörlü öneri motoruyla"
+category: "Web + Mobil"
+image: "/projects/camply-tr.png"
+tech: ["React", "React Native (Expo)", "Node.js", "Express", "PostgreSQL", "Socket.io"]
+github: "https://github.com/mervanoktan/Camply"
+year: 2026
+featured: true
+---
+
+## Problem
+
+Üniversite öğrencileri kampüste ortak ilgi alanlarına sahip insanları bulmakta
+zorlanıyor: "Halı saha maçına 3 kişi lazım" gibi ihtiyaçlar WhatsApp
+gruplarında kayboluyor, bölümler arası sosyalleşme neredeyse hiç olmuyor.
+Mevcut sosyal platformlar ise kampüse özgü değil ve sahte hesaplara açık.
+
+Camply bunu iki temel fikirle çözüyor: **yalnızca `.edu.tr` e-postasıyla
+kayıt** (her kullanıcı doğrulanmış bir üniversite öğrencisi) ve etkinlik
+odaklı eşleştirme (insanlar profil değil, aktivite üzerinden tanışıyor).
+
+## Mimari Kararlar
+
+**1. Her katmanda tek dil: JavaScript.** Backend (Node.js + Express), web
+(React) ve mobil (React Native + Expo) aynı dille yazıldı. Tek kişilik
+geliştirme hızı için bilinçli bir tercih: aynı doğrulama mantığı üç tarafta
+yeniden kullanılabiliyor, bağlam değiştirme maliyeti sıfıra iniyor.
+Başlangıç için monolitik + API-first mimari seçildi; web ve mobil aynı REST
+API'yi tüketiyor.
+
+**2. Güven, ürünün çekirdeği olarak tasarlandı.** Kampüs uygulamasında en
+kritik risk sahte hesap ve taciz. Katmanlar halinde çözüldü:
+
+- `.edu.tr` zorunluluğu + 24 saat geçerli, `crypto.randomBytes` ile üretilen
+  e-posta doğrulama linki
+- bcrypt (10 salt round) ile şifre hash'leme, 7 günlük JWT oturumları
+- Sıralı ID yerine **UUID** — `GET /users/1, /users/2...` şeklinde profil
+  taranamıyor
+- Tüm sorgularda parametreli SQL (injection koruması)
+- **Konum gizliliği:** Haritada yalnızca yaklaşık mahalle konumu görünür;
+  tam adresi sadece etkinliğe katılanlar görür
+- **Demokratik moderasyon:** Grup lideri kimseyi tek başına atamaz; üye
+  çıkarma, grup boyutuna göre eşiklenen oylamayla olur (çift oy, veritabanı
+  `UNIQUE` kısıtıyla engellenir)
+
+**3. Öneri motoru: ML modeli değil, açıklanabilir puanlama.** "Sana özel
+öneriler" için makine öğrenmesi modeli eğitmek yerine içerik tabanlı,
+kural ağırlıklı bir puanlama motoru yazdım (0–100 uyum puanı):
+
+```text
++40  aktivite kategorisi, kullanıcının ilgi kategorisiyle eşleşiyor
++10  başlık/açıklamada kullanıcının ilgi alanı adı geçiyor
++10  organizatörün puanı ≥ 4.0 (güvenilirlik bonusu)
++15  aynı bölümden katılımcı var (sosyal yakınlık)
++10  doluluk < %80  /  -20  tamamen dolu
++5   48 saat içinde başlıyor
+```
+
+Bu tercihin iki somut getirisi var: hesaplama maliyeti ihmal edilebilir
+düzeyde (50 aday × basit kurallar) ve her öneri **açıklanabilir** — kartın
+altında "Yazılım ilgi alanınla eşleşiyor" gibi gerçek sebep yazıyor. Veri
+biriktikçe aynı arayüz korunarak öğrenen bir modele geçilebilir.
+
+**4. Gerçek zamanlı sohbet: Socket.io + oda bazlı yetkilendirme.** Mesajlar
+için polling yerine WebSocket kullanıldı. Kritik detay güvenlikte: bağlantı
+kurulurken JWT doğrulanıyor ve her `join_room` isteğinde kullanıcının o
+etkinliğin katılımcısı olduğu veritabanından teyit ediliyor — token'ı olan
+herkes her odaya giremiyor.
+
+**5. Veri modeli: 10 tablolu ilişkisel şema.** Etkinlik-katılımcı-puan-mesaj
+ilişkileri PostgreSQL'de normalize edildi; mesajlar `activity_id`,
+katılımcılar `user_id`, puanlar `rated_id` üzerinden indekslendi. Süresi
+geçen etkinlikleri her gece kapatan `node-cron` görevi ile veri güncel
+tutuluyor.
+
+## Sonuç ve Durum
+
+<MetricGrid>
+  <Metric value="3" label="Platform: Web, iOS, Android — tek dil" />
+  <Metric value="10" label="Normalize PostgreSQL tablosu" />
+  <Metric value="6" label="Öneri motorunda değerlendirilen sinyal" />
+</MetricGrid>
+
+<Callout>
+  Proje aktif geliştirme aşamasında. Yol haritası: bildirim sistemi,
+  gelişmiş AI eşleştirme ve veri hacmi büyüdüğünde mikroservis mimarisine
+  kademeli geçiş.
+</Callout>
+
+En önemli ders: kısıtlı kaynakla ürün geliştirirken "en havalı" çözüm yerine
+**sürdürülebilir ve açıklanabilir** çözümü seçmek. Kural tabanlı öneri
+motoru, ML altyapısı kurmanın haftalar sürecek maliyeti olmadan aynı ürün
+deneyimini verdi — ve kullanıcıya "neden bu öneri?" sorusunun cevabını
+gösterebiliyor.

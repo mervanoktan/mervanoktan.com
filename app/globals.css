@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Renk sistemi: Stripe tarzı — tek güçlü marka rengi (indigo) ve onun
+  yumuşak tonu (accent-soft). Vurgu rengi linklerde, rozetlerde ve
+  bölüm etiketlerinde kullanılır; zeminler nötr kalır.
+*/
+:root {
+  --background: #ffffff;
+  --foreground: #18181b;
+  --muted: #f6f6f8;
+  --muted-foreground: #6b7080;
+  --border: #e6e6eb;
+  --accent: #4f46e5;
+  --accent-foreground: #ffffff;
+  --accent-soft: #eef0fe;
+  --accent-soft-foreground: #4338ca;
+}
+
+.dark {
+  --background: #0b0c10;
+  --foreground: #ececf1;
+  --muted: #16171d;
+  --muted-foreground: #9ba0b0;
+  --border: #24252e;
+  --accent: #8b93ff;
+  --accent-foreground: #0b0c10;
+  --accent-soft: #1b1d33;
+  --accent-soft-foreground: #a5acff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-foreground: var(--accent-soft-foreground);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/*
+  Sayfanın en üstündeki 2px'lik marka çizgisi.
+  Sitedeki tek gradyan bilinçli olarak bu: küçük, işlevsel, imza niteliğinde.
+*/
+.brand-hairline {
+  height: 2px;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed 50%, #0ea5e9);
+}
+
+/* rehype-pretty-code: kod blokları */
+pre {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+pre [data-line] {
+  padding: 0 0.25rem;
+}
+
+code {
+  font-family: var(--font-mono);
+}
