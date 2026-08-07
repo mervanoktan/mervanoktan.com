@@ -57,10 +57,22 @@ export type Repo = {
 
 export async function getGithubRepos(): Promise<Repo[]> {
   try {
+    /*
+      GITHUB_TOKEN tanımlıysa kimlik doğrulamalı istek atılır.
+      Neden önemli: kimliksiz istekler IP başına saatte 60 ile sınırlı ve
+      Vercel'de IP'ler paylaşımlı olduğu için bu limit hızla dolabiliyor —
+      o durumda GitHub bölümü sessizce kayboluyor. Token ile limit 5000'e çıkar.
+      Token yoksa kod yine çalışır, sadece limite takılma riski artar.
+    */
+    const token = process.env.GITHUB_TOKEN;
+
     const res = await fetch(
       `https://api.github.com/users/${githubConfig.username}/repos?per_page=100&sort=pushed`,
       {
-        headers: { Accept: "application/vnd.github+json" },
+        headers: {
+          Accept: "application/vnd.github+json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         // ISR: GitHub'a her istekte değil, saatte bir gidilir
         next: { revalidate: 3600 },
       },
