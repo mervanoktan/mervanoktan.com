@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -114,6 +116,9 @@ export default async function RootLayout({
             <SiteFooter locale={locale as Locale} />
           </div>
         </ThemeProvider>
+        {/* Ziyaretçi istatistikleri ve sayfa hızı ölçümü — yalnızca Vercel'de çalışır */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -140,6 +140,13 @@ const tr = {
       subject: "Portfolyo üzerinden yeni mesaj",
     },
   },
+  notFound: {
+    code: "404",
+    title: "Sayfa bulunamadı",
+    description:
+      "Aradığın sayfa taşınmış, adı değişmiş ya da hiç var olmamış olabilir.",
+    backHome: "Ana sayfaya dön",
+  },
   footer: {
     email: "E-posta",
     sitemap: "Site",
@@ -275,6 +282,13 @@ const en: typeof tr = {
       errorSuffix: ".",
       subject: "New message from portfolio",
     },
+  },
+  notFound: {
+    code: "404",
+    title: "Page not found",
+    description:
+      "The page you are looking for may have moved, been renamed, or never existed.",
+    backHome: "Back to home",
   },
   footer: {
     email: "Email",
