@@ -7,5 +7,5 @@ export const site = {
   email: "merwanoktan@gmail.com",
   github: "https://github.com/mervanoktan",
   linkedin: "https://www.linkedin.com/in/mervan-oktan-113377295",
-  url: "https://ornek-site.vercel.app",
+  url: "https://mervanoktan.com.tr",
 } as const;

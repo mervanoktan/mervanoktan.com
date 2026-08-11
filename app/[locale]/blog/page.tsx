@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PenLine } from "lucide-react";
 import { getPosts } from "@/lib/content";
 import { getDictionary, isLocale } from "@/lib/i18n";
 
@@ -36,6 +37,18 @@ export default async function BlogPage({
       <p className="mt-2 text-sm text-muted-foreground">
         {dict.blog.pageSubtitle}
       </p>
+
+      {posts.length === 0 && (
+        <div className="mt-10 flex items-start gap-3 rounded-lg border border-dashed border-border p-6">
+          <PenLine className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">{dict.blog.emptyTitle}</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              {dict.blog.emptyBody}
+            </p>
+          </div>
+        </div>
+      )}
 
       <ul className="mt-10 space-y-8">
         {posts.map((post) => (

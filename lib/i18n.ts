@@ -21,10 +21,10 @@ const tr = {
   hero: {
     status: "Staj ve iş fırsatlarına açığım.",
     location: "Elazığ, Türkiye · Uzaktan çalışmaya açık",
-    title: "Yazılım Mühendisi",
-    headline: "Ölçeklenebilir web sistemleri kuran yazılım mühendisi.",
+    title: "Yazılım Mühendisliği Öğrencisi",
+    headline: "Veri odaklı tahmin modelleri ve otomasyon sistemleri geliştiriyorum.",
     summary:
-      "Full-stack geliştirme, dağıtık sistemler ve frontend performansı üzerine çalışıyorum. Karmaşık problemleri basit, bakımı kolay çözümlere dönüştürmeyi önemsiyorum.",
+      "Fırat Üniversitesi Yazılım Mühendisliği son sınıf öğrencisiyim. Akademik tarafta açık kaynak paketlerin sürdürülebilirliğini öngören bir tahmin modeli üzerine çalışıyorum. Uygulama tarafında ise gerçek kullanıcıları olan web, mobil ve masaüstü sistemler geliştirdim. Araştırdığım konuyu çalışan bir ürüne dönüştürmeyi seviyorum.",
     contactButton: "İletişime geç",
   },
   projects: {
@@ -59,26 +59,35 @@ const tr = {
     title: "Uzmanlık & Deneyim",
     expertiseHeading: "Uzmanlık Alanları",
     workHeading: "Eğitim",
+    /*
+      Her madde gerçekten yapılmış bir işe dayanır; parantez içindeki
+      proje o iddianın kanıtıdır. Kanıtı olmayan madde eklenmemeli.
+    */
     expertise: [
       {
-        area: "Frontend Mimarisi",
+        area: "Öneri ve Tahmin Sistemleri",
         detail:
-          "React/Next.js ile büyük ölçekli uygulamalar; render stratejileri (SSR/ISR/RSC), bundle optimizasyonu ve tasarım sistemleri.",
+          "Çok sinyalli puanlama motorları ve veri odaklı tahmin modelleri; sonucun neden öyle çıktığını açıklayabilen şeffaf yaklaşımlar.",
       },
       {
-        area: "Backend & API Tasarımı",
+        area: "Nesne Tabanlı Tasarım & Katmanlı Mimari",
         detail:
-          "Node.js/TypeScript ile REST ve tRPC servisleri; veri modelleme, kimlik doğrulama ve önbellekleme stratejileri.",
+          "C#/.NET ile N-Tier yapılar; iş kurallarını arayüzden ayırarak tekrar kullanılabilir ve bakımı kolay hale getirme.",
       },
       {
-        area: "Sistem Tasarımı",
+        area: "Veri Modelleme & İlişkisel Veritabanları",
         detail:
-          "Kuyruk tabanlı asenkron işleme, yatay ölçekleme ve gözlemlenebilirlik (logging, tracing, metrics).",
+          "PostgreSQL ve MS SQL Server; normalizasyon, tablolar arası ilişki tasarımı ve sık sorgulanan alanlarda indeksleme.",
       },
       {
-        area: "Frontend Performansı",
+        area: "Uygulama Güvenliği",
         detail:
-          "Core Web Vitals odaklı optimizasyon: kritik render yolu, kod bölme, görsel optimizasyonu ve ölçüm altyapısı.",
+          "JWT tabanlı oturum yönetimi, bcrypt ile şifre saklama, sıralı ID yerine UUID kullanımı ve parametreli SQL sorguları.",
+      },
+      {
+        area: "Web & Mobil Geliştirme",
+        detail:
+          "React, React Native (Expo) ve Node.js ile uçtan uca uygulama geliştirme.",
       },
     ],
     /*
@@ -118,6 +127,9 @@ const tr = {
     pageSubtitle:
       "Çözülen zor problemler ve mimari yaklaşımlar üzerine derinlemesine yazılar.",
     back: "Blog",
+    emptyTitle: "Yakında burada",
+    emptyBody:
+      "İlk yazım hazırlık aşamasında. Geliştirdiğim projelerde karşılaştığım teknik problemleri ve aldığım mimari kararları burada paylaşacağım.",
   },
   contact: {
     eyebrow: "İletişim",
@@ -154,7 +166,7 @@ const tr = {
   },
   meta: {
     description:
-      "Full-stack geliştirme, dağıtık sistemler ve frontend performansı üzerine çalışan yazılım mühendisi.",
+      "Fırat Üniversitesi Yazılım Mühendisliği öğrencisi. Veri odaklı tahmin modelleri, otomasyon sistemleri ve web/mobil uygulama geliştirme.",
   },
 };
 
@@ -168,10 +180,10 @@ const en: typeof tr = {
   hero: {
     status: "Open to internship and job opportunities.",
     location: "Elazığ, Türkiye · Open to remote work",
-    title: "Software Engineer",
-    headline: "Software engineer building scalable web systems.",
+    title: "Software Engineering Student",
+    headline: "I build data-driven prediction models and automation systems.",
     summary:
-      "I work on full-stack development, distributed systems and frontend performance. I care about turning complex problems into simple, maintainable solutions.",
+      "I am a final-year Software Engineering student at Fırat University. On the academic side I am working on a model that predicts the sustainability of open-source packages. On the practical side I have built web, mobile and desktop systems with real users. I enjoy turning what I research into a working product.",
     contactButton: "Get in touch",
   },
   projects: {
@@ -208,24 +220,29 @@ const en: typeof tr = {
     workHeading: "Education",
     expertise: [
       {
-        area: "Frontend Architecture",
+        area: "Recommendation & Prediction Systems",
         detail:
-          "Large-scale applications with React/Next.js; rendering strategies (SSR/ISR/RSC), bundle optimization and design systems.",
+          "Multi-signal scoring engines and data-driven prediction models; transparent approaches that can explain why a result came out the way it did.",
       },
       {
-        area: "Backend & API Design",
+        area: "Object-Oriented Design & Layered Architecture",
         detail:
-          "REST and tRPC services with Node.js/TypeScript; data modeling, authentication and caching strategies.",
+          "N-Tier structures with C#/.NET; separating business rules from the UI to make them reusable and maintainable.",
       },
       {
-        area: "System Design",
+        area: "Data Modeling & Relational Databases",
         detail:
-          "Queue-based async processing, horizontal scaling and observability (logging, tracing, metrics).",
+          "PostgreSQL and MS SQL Server; normalization, relationship design and indexing on frequently queried fields.",
       },
       {
-        area: "Frontend Performance",
+        area: "Application Security",
         detail:
-          "Core Web Vitals focused optimization: critical rendering path, code splitting, image optimization and measurement infrastructure.",
+          "JWT-based session management, password hashing with bcrypt, UUIDs instead of sequential IDs, and parameterized SQL queries.",
+      },
+      {
+        area: "Web & Mobile Development",
+        detail:
+          "End-to-end application development with React, React Native (Expo) and Node.js.",
       },
     ],
     work: [
@@ -261,6 +278,9 @@ const en: typeof tr = {
     pageSubtitle:
       "In-depth writing on hard problems solved and architectural approaches learned.",
     back: "Blog",
+    emptyTitle: "Coming soon",
+    emptyBody:
+      "My first post is in preparation. I will share the technical problems I run into and the architectural decisions I make while building my projects.",
   },
   contact: {
     eyebrow: "Contact",
@@ -297,7 +317,7 @@ const en: typeof tr = {
   },
   meta: {
     description:
-      "Software engineer working on full-stack development, distributed systems and frontend performance.",
+      "Software Engineering student at Fırat University. Data-driven prediction models, automation systems and web/mobile application development.",
   },
 };
 
