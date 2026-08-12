@@ -21,7 +21,12 @@ const tr = {
   hero: {
     status: "Staj ve iş fırsatlarına açığım.",
     location: "Elazığ, Türkiye · Uzaktan çalışmaya açık",
-    title: "Yazılım Mühendisliği Öğrencisi",
+    /*
+      Bu alan sayfa başlığını (Google sonuçlarında görünen), hero etiketini,
+      OG kartını ve JSON-LD jobTitle'ını besler. Öğrenci olduğu bilgisi
+      hero özetinde ve Eğitim bölümünde ayrıca belirtiliyor.
+    */
+    title: "Yazılım Mühendisi",
     headline: "Veri odaklı tahmin modelleri ve otomasyon sistemleri geliştiriyorum.",
     summary:
       "Fırat Üniversitesi Yazılım Mühendisliği son sınıf öğrencisiyim. Akademik tarafta açık kaynak paketlerin sürdürülebilirliğini öngören bir tahmin modeli üzerine çalışıyorum. Uygulama tarafında ise gerçek kullanıcıları olan web, mobil ve masaüstü sistemler geliştirdim. Araştırdığım konuyu çalışan bir ürüne dönüştürmeyi seviyorum.",
@@ -166,7 +171,7 @@ const tr = {
   },
   meta: {
     description:
-      "Fırat Üniversitesi Yazılım Mühendisliği öğrencisi. Veri odaklı tahmin modelleri, otomasyon sistemleri ve web/mobil uygulama geliştirme.",
+      "Veri odaklı tahmin modelleri, otomasyon sistemleri ve web/mobil uygulamalar geliştiriyorum. Fırat Üniversitesi Yazılım Mühendisliği son sınıf öğrencisi.",
   },
 };
 
@@ -180,7 +185,7 @@ const en: typeof tr = {
   hero: {
     status: "Open to internship and job opportunities.",
     location: "Elazığ, Türkiye · Open to remote work",
-    title: "Software Engineering Student",
+    title: "Software Engineer",
     headline: "I build data-driven prediction models and automation systems.",
     summary:
       "I am a final-year Software Engineering student at Fırat University. On the academic side I am working on a model that predicts the sustainability of open-source packages. On the practical side I have built web, mobile and desktop systems with real users. I enjoy turning what I research into a working product.",
@@ -317,7 +322,7 @@ const en: typeof tr = {
   },
   meta: {
     description:
-      "Software Engineering student at Fırat University. Data-driven prediction models, automation systems and web/mobile application development.",
+      "I build data-driven prediction models, automation systems and web/mobile applications. Final-year Software Engineering student at Fırat University.",
   },
 };
 
