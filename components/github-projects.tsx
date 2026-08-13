@@ -49,18 +49,26 @@ export async function GithubProjects({ locale }: { locale: Locale }) {
             override?.description?.[locale] ?? repo.description;
 
           return (
-          <a
+          /*
+            Kartın tamamı GitHub'a gider; canlı rozeti ise siteye.
+            İç içe <a> geçersiz HTML olduğu için "stretched link" deseni:
+            başlık linki after:absolute ile tüm kartı kaplar, rozet de
+            relative z-10 ile onun üstünde kalıp kendi hedefine gider.
+          */
+          <div
             key={repo.name}
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col rounded-lg border border-border p-4 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
+            className="group relative flex flex-col rounded-lg border border-border p-4 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
           >
             <div className="flex items-center gap-2">
               <Github className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <span className="truncate font-mono text-sm font-semibold group-hover:text-accent">
+              <a
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate font-mono text-sm font-semibold after:absolute after:inset-0 group-hover:text-accent"
+              >
                 {displayName}
-              </span>
+              </a>
               {repo.featured && (
                 <span className="ml-auto shrink-0 rounded-md bg-accent-soft px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-accent-soft-foreground">
                   {dict.github.featured}
@@ -92,15 +100,20 @@ export async function GithubProjects({ locale }: { locale: Locale }) {
                 </span>
               )}
 
-              {/* Repo'nun GitHub'daki "Website" alanı doluysa canlı demo rozeti */}
+              {/* Repo'nun GitHub'daki "Website" alanı doluysa canlı siteye giden rozet */}
               {repo.homepage && (
-                <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-accent-soft px-1.5 py-0.5 font-medium text-accent-soft-foreground">
+                <a
+                  href={repo.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative z-10 ml-auto inline-flex items-center gap-1 rounded-md bg-accent-soft px-1.5 py-0.5 font-medium text-accent-soft-foreground transition-colors hover:bg-accent hover:text-white"
+                >
                   {dict.github.live}
                   <ArrowUpRight className="h-3 w-3" />
-                </span>
+                </a>
               )}
             </div>
-          </a>
+          </div>
           );
         })}
       </div>
