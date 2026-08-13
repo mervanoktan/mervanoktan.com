@@ -1,4 +1,4 @@
-import { Github, Star } from "lucide-react";
+import { ArrowUpRight, Github, Star } from "lucide-react";
 import { getGithubRepos, githubConfig } from "@/lib/github";
 import { getDictionary, type Locale } from "@/lib/i18n";
 
@@ -89,6 +89,14 @@ export async function GithubProjects({ locale }: { locale: Locale }) {
                 <span className="inline-flex items-center gap-1">
                   <Star className="h-3 w-3" />
                   {repo.stargazers_count}
+                </span>
+              )}
+
+              {/* Repo'nun GitHub'daki "Website" alanı doluysa canlı demo rozeti */}
+              {repo.homepage && (
+                <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-accent-soft px-1.5 py-0.5 font-medium text-accent-soft-foreground">
+                  {dict.github.live}
+                  <ArrowUpRight className="h-3 w-3" />
                 </span>
               )}
             </div>
